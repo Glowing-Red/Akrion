@@ -115,9 +115,7 @@ Theme = {
     ["Innovation"] = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(247, 225, 130)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(247, 225, 130))}
 }
 
-local Library = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/Glowing-Red/Random/main/www.lua"
-))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Glowing-Red/Akrion/main/Exclusive/Re-Skinned%20Libary%20(Anime%20Adventures)"))()
 
 local Forums = Library.new(GuiName, Theme[Settings.Theme], Settings.Pos.Content, Settings.Pos.Shadow)
 
