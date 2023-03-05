@@ -1,4 +1,4 @@
-Hubs = {
+return {
 	EzHub = {
 		Name = "EZHub";
 		Description = "A menu with a large variety of different scripts stored within it!";
@@ -14,5 +14,3 @@ Hubs = {
 		Url = "https://thedragonslayer2.github.io/AutoExec.html";
 	};
 }
-
-return Hubs
