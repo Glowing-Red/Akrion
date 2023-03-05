@@ -131,50 +131,27 @@ local plr = Players.LocalPlayer
 
 
 Map:Seperator()
-local UpdateMap = {
-    ["Grassy Island"] = "GrassyIsland",
-    ["Mythical Shore"] = "MythicalShore",
-    ["Seaside Shore"] = "Isle",
-    ["White Forest"] = "WhiteForest",
-    ["Crystal Mines"] = "CrystalMines",
-    ["Thundercliff"] = "Thundercliff",
-    ["Autumn Cliffside"] = "AutumnCliffside",
-    ["Sky Islands"] = "SkyIslands",
-    ["Canyon Crossing"] = "CanyonCrossing",
-    ["Molten Cliffs"] = "MoltenCliffs",
-    ["Gaia"] = "Gaia",
-    ["Barren Desert"] = "BarrenDesert",
-    ["Faction Central"] = "FactionCentral",
-    ["Snowy Avenue"] = "SnowyAvenue",
-    ["Roundabout"] = "Roundabout",
-    ["Interstellar Defense"] = "InterstellarDefense",
-    ["Shrangi La"] = "ShangriLa",
-    ["Mushroom Island"] = "MushroomIsland",
-    ["Megalith Site"] = "MegalithSite",
-    ["Airway"] = "Airway"
-}
-local Maps = {
-    "Grassy Island",
-    "Mythical Shore",
-    "Seaside Shore",
-    "White Forest",
-    "Crystal Mines",
-    "Thundercliff",
-    "Autumn Cliffside",
-    "Sky Islands",
-    "Canyon Crossing",
-    "Molten Cliffs",
-    "Gaia",
-    "Barren Desert",
-    "Faction Central",
-    "Snowy Avenue",
-    "Roundabout",
-    "Interstellar Defense",
-    "Shrangi La",
-    "Mushroom Island",
-    "Megalith Site",
-    "Airway"
-}
+function GetMaps()
+    local a = {}
+    for b,c in pairs(Rs.MapInfo:GetChildren()) do
+        local d = require(c)
+        if not d.Unusable == true then
+            a[c.Name] = d.Title
+        end
+    end
+    return a
+end
+
+local Maps = GetMaps()
+
+function GetMap(map)
+    for a,b in pairs(Maps) do
+        if b == map then
+            return a
+        end
+    end
+    return nil
+end
 
 Map:NewButton("Create", function()
     game:GetService("ReplicatedStorage").Events.StartServer:InvokeServer("Solo", "Invite")
@@ -184,7 +161,7 @@ Map:NewDropdown("Chosen Map: ", Settings.Map.Map, Maps, function(map)
     SaveSettings()
 end)
 Map:NewButton("Map", function()
-    game:GetService("ReplicatedStorage").Events.UpdateMap:InvokeServer(UpdateMap[Settings.Map.Map])
+    game:GetService("ReplicatedStorage").Events.UpdateMap:InvokeServer(GetMap(Settings.Map.Map))
 end)
 Map:NewButton("Start", function()
     game:GetService("ReplicatedStorage").Events.StartGame:InvokeServer()
