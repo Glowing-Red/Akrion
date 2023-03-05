@@ -1,4 +1,10 @@
 return {
+	BetterRBLX = {
+		Name = "Better Roblox";
+		Description = "Client Modification Script that improves your roblox experience and adds new features in the settings tab";
+		Search = "BetterRoblox|Better Roblox";
+		Url = "https://eternityhub.xyz/BetterRoblox/Loader";
+	};
 	Hydroxide = {
 		Name = "Hydroxide";
 		Description = "Advanced Remote Spy tool that allows you to view remotes called";
