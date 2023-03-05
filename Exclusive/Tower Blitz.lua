@@ -108,7 +108,7 @@ function t:Disconnect()
     t.refs[self] = nil
 end
 
-GuiName = "UnnamedGui"
+GuiName = "Tower Blitz"
 Theme = {
     ["Default"] = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(51, 175, 255)), ColorSequenceKeypoint.new(0.10, Color3.fromRGB(51, 113, 255)), ColorSequenceKeypoint.new(0.20, Color3.fromRGB(51, 52, 255)), ColorSequenceKeypoint.new(0.30, Color3.fromRGB(110, 51, 255)), ColorSequenceKeypoint.new(0.40, Color3.fromRGB(171, 51, 255)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(232, 51, 255)), ColorSequenceKeypoint.new(0.60, Color3.fromRGB(255, 51, 215)), ColorSequenceKeypoint.new(0.70, Color3.fromRGB(255, 51, 154)), ColorSequenceKeypoint.new(0.80, Color3.fromRGB(255, 51, 93)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 69, 51)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 130, 51))},
     ["Rainbow"] = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 88, 51)), ColorSequenceKeypoint.new(0.10, Color3.fromRGB(255, 161, 51)), ColorSequenceKeypoint.new(0.20, Color3.fromRGB(255, 234, 51)), ColorSequenceKeypoint.new(0.30, Color3.fromRGB(201, 255, 51)), ColorSequenceKeypoint.new(0.40, Color3.fromRGB(128, 255, 51)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(54, 255, 51)), ColorSequenceKeypoint.new(0.60, Color3.fromRGB(51, 255, 120)), ColorSequenceKeypoint.new(0.70, Color3.fromRGB(51, 255, 194)), ColorSequenceKeypoint.new(0.80, Color3.fromRGB(51, 242, 255)), ColorSequenceKeypoint.new(0.90, Color3.fromRGB(51, 168, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(51, 95, 255))},
