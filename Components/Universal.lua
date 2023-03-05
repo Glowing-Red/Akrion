@@ -1,4 +1,4 @@
-Universals = {
+return {
 	Hydroxide = {
 		Name = "Hydroxide";
 		Description = "Advanced Remote Spy tool that allows you to view remotes called";
@@ -72,5 +72,3 @@ Universals = {
 		Url = "https://cdn.synapse.to/synapsedistro/hub/ScriptDump.lua";	
 	};
 }
-
-return Universals
