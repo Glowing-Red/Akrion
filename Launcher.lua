@@ -22,16 +22,16 @@ function Component(file)
 end
 
 for a,b in pairs({["Hub"] = Hubs, ["Menu"] = Menus, ["Universal"] = Universals}) do
-    local t = Component(a)
-    if type(t) == "table" then
-        for c,d in pairs(Component(a)) do
+    local c = Component(a)
+    if type(c) == "table" then
+        for d,e in pairs(Component(a)) do
             b:AddButton({
-                Title = d.Name;
-                Description = d.Description;
-                Search = d.SearchName;
-                Url = d.Url;
+                Title = e.Name;
+                Description = e.Description;
+                Search = e.SearchName;
+                Url = e.Url;
             })
         end
-        table.clear(t)
+        table.clear(c)
     end
 end
