@@ -30,8 +30,27 @@ for a,b in pairs({["Hub"] = Hubs, ["Menu"] = Menus, ["Universal"] = Universals})
                 Description = e.Description;
                 Search = e.SearchName;
                 Url = e.Url;
+                Callback = function()
+                    if type(e.Url) == "string" and e.Url ~= "" then
+                        local Success, Response = pcall(function()
+                            loadstring(game:HttpGet(e.Url))()
+                        end)
+                        if not Success then
+                            Akrion:SendNotification({
+                                Title = "Loadstring Error";
+                                Content = Response;
+                                Time = 6;
+                            })
+                        end	
+                    else
+                        Akrion:SendNotification({
+                            Title = "Url Error";
+                            Content = "Please double check that the url is a string and actually contains anything";
+                            Time = 5;
+                        })
+                    end
+                end
             })
         end
-        table.clear(c)
     end
 end
