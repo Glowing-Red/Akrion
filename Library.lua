@@ -1059,6 +1059,7 @@ function AkrionLib:MakeWindow(Configs)
             Configs.Description = Configs.Description or "Description"
             Configs.Search = Configs.Search or "Search"
             Configs.Url = Configs.Url or ""
+            Configs.Callback = Configs.Callback or function() print("Callback") end
             
             local Button = Create("TextButton", {
                 Name = Configs.Search,
@@ -1130,26 +1131,7 @@ function AkrionLib:MakeWindow(Configs)
                 TextStrokeTransparency = 0.500,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }))
-            Connect(Button.MouseButton1Click, function()
-                if type(Configs.Url) == "string" and Configs.Url ~= "" then
-                    local Success, Response = pcall(function()
-                        loadstring(game:HttpGet(Configs.Url))()
-                    end)
-                    if not Success then
-                        AkrionLib:SendNotification({
-                            Title = "Loadstring Error";
-                            Content = Response;
-                            Time = 7.5;
-                        })
-                    end	
-                else
-                    AkrionLib:SendNotification({
-                        Title = "Url Error";
-                        Content = "Please double check that the url is a string and actually contains anything";
-                        Time = 6.5;
-                    })
-                end
-            end)
+            Connect(Button.MouseButton1Click, Configs.Callback)
         end
         return TabFunction
     end
