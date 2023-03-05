@@ -1,4 +1,4 @@
-Menus = {
+Menu = {
 	BubbleTrouble = {
 		Name = "Bubble Trouble";
 		Description = "A menu specialized for a game called Bubble Gum TD";
@@ -8,4 +8,4 @@ Menus = {
 	};
 }
 
-return Menus
+return Menu
