@@ -13,4 +13,11 @@ return {
 		Search = "Tower Blitz|Exclusive";
 		Url = "https://raw.githubusercontent.com/Glowing-Red/Akrion/main/Exclusive/Tower%20Blitz.lua";
 	};
+	MadCityRuby = {
+		Name = "Mad City Ruby Hub";
+		Description = "Ruby Hub Menu specialized for Mad City Chapter 2";
+		GameDetect = 498490399;
+		Search = "Madcity|Mad City";
+		Url = "https://raw.githubusercontent.com/Deni210/madcity/main/Ruby%20Hub%20Chapter%202";
+	};
 }
