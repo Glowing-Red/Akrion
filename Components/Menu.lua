@@ -20,4 +20,11 @@ return {
 		Search = "Madcity|Mad City";
 		Url = "https://raw.githubusercontent.com/Deni210/madcity/main/Ruby%20Hub%20Chapter%202";
 	};
+	Intruders = {
+		Name = "Anime Dimensions Intruders";
+		Description = "Menu with a keysystem manufactured and released by ''The Intruders'', that was specialized for Anime Dimensions Simulator";
+		GameDetect = 2655311011;
+		Search = "Anime Dimensions Simulator";
+		Url = "https://raw.githubusercontent.com/lifaiossama/errors/main/Intruders.html";
+	};
 }
