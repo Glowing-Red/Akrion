@@ -190,7 +190,7 @@ function SetupGui(gui)
         return
     end
     if syn then
-        --syn.protect_gui(gui)
+        syn.protect_gui(gui)
         gui.Parent = game.CoreGui
     else
         gui.Parent = gethui() or game.CoreGui
