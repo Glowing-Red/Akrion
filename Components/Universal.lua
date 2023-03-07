@@ -9,13 +9,13 @@ return {
 		Name = "Hydroxide";
 		Description = "Advanced Remote Spy tool that allows you to view remotes called";
 		Search = "Hydroxide";
-		Url = "https://raw.githubusercontent.com/Glowing-Red/Togas-Domain/main/Storage/Universals/Hydroxide.lua";
+		Url = "https://raw.githubusercontent.com/Glowing-Red/Akrion/main/Components/Storage/Hydroxide.lua";
 	};
 	ServerBrowser = {
 		Name = "Server Browser";
-		Description = "A browser for server hop";
-		Search = "Server Browser";
-		Url = "https://raw.githubusercontent.com/Glowing-Red/Togas-Domain/main/Storage/Universals/Server%20Browser.lua";
+		Description = "A browser for a more customized server hop";
+		Search = "Server Browser|Server Hop";
+		Url = "https://raw.githubusercontent.com/Glowing-Red/Akrion/main/Components/Storage/Server%20Browser.lua";
 	};
 	CmdX = {
 		Name = "CMD-X";
@@ -47,6 +47,12 @@ return {
 		Search = "Coords Finder";
 		Url = "https://grfbin.ml/scripts/coordsfinderv3.lua";	
 	};
+	DexExplorer = {
+		Name = "Dex Explorer";
+		Description = "Popular Dex Explorer that allows you to view the game structure on your client";
+		Search = "Dex Explorer";
+		Url = "https://raw.githubusercontent.com/peyton2465/Dex/master/out.lua";	
+	};
 	DarkDexV3 = {
 		Name = "Dark Dex V3";
 		Description = "A version of the popular Dex explorer with patches specifically for Synapse X";
@@ -76,5 +82,17 @@ return {
 		Description = "Saves all Local & Module scripts";
 		Search = "Script Dumper|Synapse X";
 		Url = "https://cdn.synapse.to/synapsedistro/hub/ScriptDump.lua";	
+	};
+	SimpleSpyV3 = {
+		Name = "Simple Spy V3";
+		Description = "Allows you to spy on remotes";
+		Search = "Simple Spy";
+		Url = "https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua";	
+	};
+	AudioLogger = {
+		Name = "Audio Logger";
+		Description = "Logs the ingame audios and their ids for you to see";
+		Search = "Audio Logger";
+		Url = "https://raw.githubusercontent.com/infyiff/backup/main/audiologger.lua";	
 	};
 }
