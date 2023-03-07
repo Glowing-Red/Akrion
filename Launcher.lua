@@ -21,6 +21,21 @@ function Component(file)
     return nil
 end
 
+function GameDetect(a)
+    if typeof(a) == "table" then
+        for _,b in ipairs(a) do
+            if game.GameId == b or game.PlaceId == b then
+                return true
+            end
+        end
+    else
+        if game.GameId == a or game.PlaceId == a then
+            return true
+        end
+    end
+    return false
+end
+
 for a,b in pairs({["Hub"] = Hubs, ["Menu"] = Menus, ["Universal"] = Universals}) do
     local c = Component(a)
     if type(c) == "table" then
