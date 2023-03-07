@@ -19,9 +19,42 @@ local AkrionLib = {
 			User = "rbxassetid://3600632866"
 		};
 	};
-	SelectedTheme = "Aesthetic";
+	Theme = "Aesthetic";
 	Hidden = false;
+	Position = "{0.5, 0}, {0.5, 0}";
 }
+
+function SaveSettings()
+    local a = game:GetService("HttpService"):JSONEncode({
+        Theme = AkrionLib.Theme;
+        Hidden = AkrionLib.Hidden;
+        Position = AkrionLib.Position;
+    })
+    if writefile then
+        if isfolder("Toga ™/Akrion") then
+            writefile("Toga ™/Akrion/Settings.lua", a)
+        else
+            if not isfolder("Toga ™") then
+                makefolder("Toga ™")
+            end
+            if not isfolder("Akrion") then
+                makefolder("Toga ™".."\\".."Akrion")
+            end
+            writefile("Toga ™".."\\".."Akrion".."\\".."Settings.lua", a)
+        end
+    end
+end
+function LoadSettings()
+    if isfile("Toga ™/Akrion/Settings.lua") then
+        for a, b in pairs(game:GetService("HttpService"):JSONDecode(readfile("Toga ™/Akrion/Settings.lua"))) do
+            if AkrionLib[a] ~= nil then
+                AkrionLib[a] = b
+            end
+        end
+    end
+end
+LoadSettings()
+SaveSettings()
 
 local AkrionTable = {
 	Tabs = {};
@@ -41,6 +74,9 @@ local Mouse = Plr:GetMouse()
 
 local Akrion
 local Messages
+local User
+
+local Init
 
 function AkrionLib:IsRunning()
 	if gethui then
@@ -59,32 +95,33 @@ local function Connect(a, b)
 	return c
 end
 
-local function MakeDraggable(DragPoint, Main)
+local function MakeDraggable(a, b)
 	pcall(function()
-		local Dragging, DragInput, MousePos, FramePos = false
-		Connect(DragPoint.InputBegan, function(Input)
-			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-				Dragging = true
-				MousePos = Input.Position
-				FramePos = Main.Position
-
-				Input.Changed:Connect(function()
-					if Input.UserInputState == Enum.UserInputState.End then
-						Dragging = false
-					end
-				end)
+		local c, d, e, f = false
+		Connect(a.InputBegan, function(g)
+			if g.UserInputType == Enum.UserInputType.MouseButton1 then
+				c = true
+				e = g.Position
+				f = b.Position
 			end
 		end)
-		Connect(DragPoint.InputChanged, function(Input)
-			if Input.UserInputType == Enum.UserInputType.MouseMovement then
-				DragInput = Input
+		Connect(a.InputEnded, function(g)
+			if g.UserInputType == Enum.UserInputType.MouseButton1 then
+				c = false
+				AkrionLib.Position = tostring(b.Position)
+				SaveSettings()
 			end
 		end)
-		Connect(UIS.InputChanged, function(Input)
-			if Input == DragInput and Dragging then
-				local Delta = Input.Position - MousePos
-				--TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
-				Main.Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
+		Connect(a.InputChanged, function(g)
+			if g.UserInputType == Enum.UserInputType.MouseMovement then
+				d = g
+			end
+		end)
+		Connect(UIS.InputChanged, function(g)
+			if g == d and c then
+				local Delta = g.Position - e
+				--TweenService:Create(b, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(f.X.Scale,f.X.Offset + Delta.X, f.Y.Scale, f.Y.Offset + Delta.Y)}):Play()
+				b.Position  = UDim2.new(f.X.Scale,f.X.Offset + Delta.X, f.Y.Scale, f.Y.Offset + Delta.Y)
 			end
 		end)
 	end)
@@ -132,12 +169,12 @@ local function AddThemeObject(Type, Object)
 		AkrionLib.ThemeObjects[Type] = {}
 	end    
 	table.insert(AkrionLib.ThemeObjects[Type], Object)
-	Object[ThemeProperty(Object)] = AkrionLib.Themes[AkrionLib.SelectedTheme][Type]
+	Object[ThemeProperty(Object)] = AkrionLib.Themes[AkrionLib.Theme][Type]
 	return Object
 end 
 
 local function SetTheme(Theme)
-    Theme = Theme or AkrionLib.SelectedTheme
+    Theme = Theme or AkrionLib.Theme
     if not AkrionLib.Themes[Theme] then 
         return
     end
@@ -382,11 +419,12 @@ function AkrionLib:MakeWindow(Configs)
     })
     local Menu = AddThemeObject("Primary", Create("Frame", {
         Name = "Menu",
+        Visible = not AkrionLib.Hidden,
         Parent = Akrion,
         Active = true,
         AnchorPoint = Vector2.new(0.5, 0.5),
         BackgroundTransparency = 1.000,
-        Position = UDim2.new(0.5, 0, 0.5, 0),
+        Position = UDim2.new(string.match(AkrionLib.Position, "^{(.-), (.-)}, {(.-), (.+)}")),
         Size = UDim2.new(0.524999976, 0, 0.449999988, 0),
         ZIndex = 2
     }))
@@ -769,6 +807,7 @@ function AkrionLib:MakeWindow(Configs)
     Connect(Close.MouseButton1Click, function()
         Menu.Visible = false
         AkrionLib.Hidden = true
+        SaveSettings()
     end)
     Connect(TabOpenButton.MouseButton1Click, function()
         TS:Create(Tab.Main, TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, 0, false, 0), {Position = UDim2.new(1, 0, 1, 0)}):Play()
@@ -783,6 +822,7 @@ function AkrionLib:MakeWindow(Configs)
     function WindowFunction:MakeTab(Configs)
         Configs = Configs or {}
         Configs.Name = Configs.Name or "Name"
+        Configs.SortOrder = Configs.SortOrder or Enum.SortOrder.Name
         local TabContentButton = Create("TextButton", {
             Name = Configs.Name,
             Parent = Tab.Main.List,
@@ -827,119 +867,17 @@ function AkrionLib:MakeWindow(Configs)
             ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0),
             VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar
         })
-        local TabFunction = {}
-        local Items = 0
         if #AkrionTable.Tabs == 0 then
-            function TabFunction:AddThemeButton(Theme)
-                Theme = Theme or AkrionLib.SelectedTheme
-                if not AkrionLib.Themes[Theme] then
-                    return
-                end
-                Items = Items + 1
-                TabContent.CanvasSize = UDim2.new(0, 0, 0, 24+125+(55*Items))
-                local Button = Create("TextButton", {
-                    Name = Theme,
-                    Parent = TabContent,
-                    AnchorPoint = Vector2.new(0.5, 0.5),
-                    BackgroundTransparency = 1.000,
-                    ClipsDescendants = true,
-                    Position = UDim2.new(0.5, 0, 0, 0),
-                    Size = UDim2.new(1, 0, 0, 50),
-                    AutoButtonColor = false,
-                    Text = ""
-                })
-                local Main = Create("Frame", {
-                    Name = "Main",
-                    Parent = Button,
-                    BackgroundColor3 = AkrionLib.Themes[Theme].Secondary,
-                    AnchorPoint = Vector2.new(0.5, 0),
-                    BorderSizePixel = 0,
-                    Position = UDim2.new(0.5, 0, 0, 0),
-                    Size = UDim2.new(1, -48, 1, 0)
-                })
-                Create("UICorner", {
-                    CornerRadius = UDim.new(0, 4),
-                    Parent = Main
-                })
-                AddThemeObject("Divider", Create("Frame", {
-                    Name = "Accent",
-                    Parent = Main,
-                    BorderSizePixel = 0,
-                    Position = UDim2.new(0, 0, 1, -1),
-                    Size = UDim2.new(1, 0, 0, 1)
-                }))
-                Create("Frame", {
-                    Name = "Info",
-                    Parent = Main,
-                    BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                    BackgroundTransparency = 1.000,
-                    BorderSizePixel = 0,
-                    Position = UDim2.new(0, 8, 0, 0),
-                    Size = UDim2.new(1, -16, 1, 0)
-                })
-                Create("UIListLayout", {
-                    Parent = Main.Info,
-                    SortOrder = Enum.SortOrder.LayoutOrder,
-                    VerticalAlignment = Enum.VerticalAlignment.Center
-                })
-                Create("TextLabel", {
-                    Name = "Title",
-                    Parent = Main.Info,
-                    BackgroundTransparency = 1.000,
-                    BorderSizePixel = 0,
-                    Size = UDim2.new(1, 0, 0, 18),
-                    FontFace = GetFont("BoldAkronim"),
-                    Text = Theme,
-                    TextSize = 16.000,
-                    TextColor3 = AkrionLib.Themes[Theme].Text,
-                    TextStrokeColor3 = Color3.fromRGB(31, 31, 31),
-                    TextStrokeTransparency = 0.500,
-                    TextXAlignment = Enum.TextXAlignment.Left
-                })
-                Create("TextLabel", {
-                    Name = "Description",
-                    Parent = Main.Info,
-                    BackgroundTransparency = 1.000,
-                    BorderSizePixel = 0,
-                    Size = UDim2.new(1, 0, 0, 14),
-                    FontFace = GetFont("BoldAkronim"),
-                    Text = string.format("Selects %s as your selected theme", Theme),
-                    TextColor3 = AkrionLib.Themes[Theme].Text,
-                    TextSize = 13.000,
-                    TextStrokeColor3 = Color3.fromRGB(31, 31, 31),
-                    TextStrokeTransparency = 0.500,
-                    TextXAlignment = Enum.TextXAlignment.Left,
-                })
-                Connect(Button.MouseButton1Click, function()
-                    if Theme ~= AkrionLib.SelectedTheme then
-                        AkrionLib.SelectedTheme = Theme
-                        TabContent.User.Image = AkrionLib.Themes[AkrionLib.SelectedTheme].User
-                        SetTheme()
-                    end
-                end)
-                Connect(Button.MouseEnter, function()
-                    if Theme ~= AkrionLib.SelectedTheme then
-                        TabContent.User.Image = AkrionLib.Themes[Theme].User
-                        SetTheme(Theme)
-                    end
-                end)
-                Connect(Button.MouseLeave, function()
-                    if Theme ~= AkrionLib.SelectedTheme then
-                        TabContent.User.Image = AkrionLib.Themes[AkrionLib.SelectedTheme].User
-                        SetTheme()
-                    end
-                end)
-            end
             TabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
             TabTitle.Text = Configs.Name
             TabTitle.Detail.Text = Configs.Name
-            Create("ImageLabel", {
+            User = Create("ImageLabel", {
                 Name = "User",
                 Parent = TabContent,
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1.000,
                 Size = UDim2.new(1, 0, 0, 125),
-                Image = AkrionLib.Themes[AkrionLib.SelectedTheme].User,
+                Image = AkrionLib.Themes[AkrionLib.Theme].User,
                 ScaleType = Enum.ScaleType.Crop
             })
             Create("UIGradient", {
@@ -988,11 +926,6 @@ function AkrionLib:MakeWindow(Configs)
                 TextSize = 30.000,
                 TextWrapped = true
             }))
-            Create("UIListLayout", {
-                Parent = TabContent,
-                SortOrder = Enum.SortOrder.LayoutOrder,
-                Padding = UDim.new(0, 5)
-            })
             Create("UIPadding", {
                 Parent = TabContent,
                 PaddingBottom = UDim.new(0, 0),
@@ -1001,17 +934,17 @@ function AkrionLib:MakeWindow(Configs)
             TabContent.Visible = false
             TabContentButton.TextTransparency = 0.2
             TabContentButton.Detail.TextTransparency = 0.2
-            Create("UIListLayout", {
-                Parent = TabContent,
-                SortOrder = Enum.SortOrder.Name,
-                Padding = UDim.new(0, 5)
-            })
             Create("UIPadding", {
                 Parent = TabContent,
                 PaddingBottom = UDim.new(0, 120),
                 PaddingTop = UDim.new(0, 24)
             })
         end
+        Create("UIListLayout", {
+                Parent = TabContent,
+                SortOrder = Configs.SortOrder,
+                Padding = UDim.new(0, 5)
+            })
         Create("UIScale", {
             Parent = TabContent,
         })
@@ -1036,6 +969,8 @@ function AkrionLib:MakeWindow(Configs)
             ["Button"] = TabContentButton, 
             ["Frame"] = TabContent
         })
+        local TabFunction = {}
+        local Items = 0
         function TabFunction:AddBlank()
             Items = Items + 1
             TabContent.CanvasSize = UDim2.new(0, 0, 0, 48 + (55*Items))
@@ -1050,6 +985,80 @@ function AkrionLib:MakeWindow(Configs)
                 AutoButtonColor = false,
                 Text = ""
             })
+        end
+        function TabFunction:AddParagraph(Configs)
+            Items = Items + 1
+            TabContent.CanvasSize = UDim2.new(0, 0, 0, 48 + (55*Items))
+            Configs.Title = Configs.Title or "Title"
+            Configs.Text = Configs.Text or "Text"
+            
+            local Frame = Create("Frame", {
+                Parent = TabContent,
+                AnchorPoint = Vector2.new(0.5, 0.5),
+                BackgroundTransparency = 1.000,
+                ClipsDescendants = true,
+                Position = UDim2.new(0.5, 0, 0, 0),
+                Size = UDim2.new(1, 0, 0, 50),
+            })
+            local Main = AddThemeObject("Secondary", Create("Frame", {
+                Name = "Main",
+                Parent = Frame,
+                AnchorPoint = Vector2.new(0.5, 0),
+                BorderSizePixel = 0,
+                Position = UDim2.new(0.5, 0, 0, 0),
+                Size = UDim2.new(1, -48, 1, 0)
+            }))
+            Create("UICorner", {
+                CornerRadius = UDim.new(0, 4),
+                Parent = Main
+            })
+            AddThemeObject("Divider", Create("Frame", {
+                Name = "Accent",
+                Parent = Main,
+                BorderSizePixel = 0,
+                Position = UDim2.new(0, 0, 1, -1),
+                Size = UDim2.new(1, 0, 0, 1)
+            }))
+            Create("Frame", {
+                Name = "Info",
+                Parent = Main,
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                BackgroundTransparency = 1.000,
+                BorderSizePixel = 0,
+                Position = UDim2.new(0, 8, 0, 0),
+                Size = UDim2.new(1, -16, 1, 0)
+            })
+            Create("UIListLayout", {
+                Parent = Main.Info,
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                VerticalAlignment = Enum.VerticalAlignment.Center
+            })
+            AddThemeObject("Text", Create("TextLabel", {
+                Name = "Title",
+                Parent = Main.Info,
+                BackgroundTransparency = 1.000,
+                BorderSizePixel = 0,
+                Size = UDim2.new(1, 0, 0, 18),
+                FontFace = GetFont("BoldAkronim"),
+                Text = Configs.Title,
+                TextSize = 16.000,
+                TextStrokeColor3 = Color3.fromRGB(31, 31, 31),
+                TextStrokeTransparency = 0.500,
+                TextXAlignment = Enum.TextXAlignment.Left
+            }))
+            AddThemeObject("Text", Create("TextLabel", {
+                Name = "Description",
+                Parent = Main.Info,
+                BackgroundTransparency = 1.000,
+                BorderSizePixel = 0,
+                Size = UDim2.new(1, 0, 0, 14),
+                FontFace = GetFont("BoldAkronim"),
+                Text = Configs.Text,
+                TextSize = 13.000,
+                TextStrokeColor3 = Color3.fromRGB(31, 31, 31),
+                TextStrokeTransparency = 0.500,
+                TextXAlignment = Enum.TextXAlignment.Left,
+            }))
         end
         function TabFunction:AddButton(Configs)
             Items = Items + 1
@@ -1133,19 +1142,128 @@ function AkrionLib:MakeWindow(Configs)
             }))
             Connect(Button.MouseButton1Click, Configs.Callback)
         end
+        if Init then
+            function TabFunction:AddThemeButton(Theme)
+                Theme = Theme or AkrionLib.Theme
+                if not AkrionLib.Themes[Theme] then
+                    return
+                end
+                Items = Items + 1
+                TabContent.CanvasSize = UDim2.new(0, 0, 0, 24+125+(55*Items))
+                local Button = Create("TextButton", {
+                    Name = Theme,
+                    Parent = TabContent,
+                    AnchorPoint = Vector2.new(0.5, 0.5),
+                    BackgroundTransparency = 1.000,
+                    ClipsDescendants = true,
+                    Position = UDim2.new(0.5, 0, 0, 0),
+                    Size = UDim2.new(1, 0, 0, 50),
+                    AutoButtonColor = false,
+                    Text = ""
+                })
+                local Main = Create("Frame", {
+                    Name = "Main",
+                    Parent = Button,
+                    BackgroundColor3 = AkrionLib.Themes[Theme].Secondary,
+                    AnchorPoint = Vector2.new(0.5, 0),
+                    BorderSizePixel = 0,
+                    Position = UDim2.new(0.5, 0, 0, 0),
+                    Size = UDim2.new(1, -48, 1, 0)
+                })
+                Create("UICorner", {
+                    CornerRadius = UDim.new(0, 4),
+                    Parent = Main
+                })
+                AddThemeObject("Divider", Create("Frame", {
+                    Name = "Accent",
+                    Parent = Main,
+                    BorderSizePixel = 0,
+                    Position = UDim2.new(0, 0, 1, -1),
+                    Size = UDim2.new(1, 0, 0, 1)
+                }))
+                Create("Frame", {
+                    Name = "Info",
+                    Parent = Main,
+                    BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                    BackgroundTransparency = 1.000,
+                    BorderSizePixel = 0,
+                    Position = UDim2.new(0, 8, 0, 0),
+                    Size = UDim2.new(1, -16, 1, 0)
+                })
+                Create("UIListLayout", {
+                    Parent = Main.Info,
+                    SortOrder = Enum.SortOrder.LayoutOrder,
+                    VerticalAlignment = Enum.VerticalAlignment.Center
+                })
+                Create("TextLabel", {
+                    Name = "Title",
+                    Parent = Main.Info,
+                    BackgroundTransparency = 1.000,
+                    BorderSizePixel = 0,
+                    Size = UDim2.new(1, 0, 0, 18),
+                    FontFace = GetFont("BoldAkronim"),
+                    Text = Theme,
+                    TextSize = 16.000,
+                    TextColor3 = AkrionLib.Themes[Theme].Text,
+                    TextStrokeColor3 = Color3.fromRGB(31, 31, 31),
+                    TextStrokeTransparency = 0.500,
+                    TextXAlignment = Enum.TextXAlignment.Left
+                })
+                Create("TextLabel", {
+                    Name = "Description",
+                    Parent = Main.Info,
+                    BackgroundTransparency = 1.000,
+                    BorderSizePixel = 0,
+                    Size = UDim2.new(1, 0, 0, 14),
+                    FontFace = GetFont("BoldAkronim"),
+                    Text = string.format("Selects %s as your chosen theme", Theme),
+                    TextColor3 = AkrionLib.Themes[Theme].Text,
+                    TextSize = 13.000,
+                    TextStrokeColor3 = Color3.fromRGB(31, 31, 31),
+                    TextStrokeTransparency = 0.500,
+                    TextXAlignment = Enum.TextXAlignment.Left,
+                })
+                Connect(Button.MouseButton1Click, function()
+                    if Theme ~= AkrionLib.Theme then
+                        AkrionLib.Theme = Theme
+                        User.Image = AkrionLib.Themes[AkrionLib.Theme].User
+                        SetTheme()
+                        SaveSettings()
+                    end
+                end)
+                Connect(Button.MouseEnter, function()
+                    if Theme ~= AkrionLib.Theme then
+                        User.Image = AkrionLib.Themes[Theme].User
+                        SetTheme(Theme)
+                    end
+                end)
+                Connect(Button.MouseLeave, function()
+                    if Theme ~= AkrionLib.Theme then
+                        User.Image = AkrionLib.Themes[AkrionLib.Theme].User
+                        SetTheme()
+                    end
+                end)
+            end
+        end
         return TabFunction
     end
-    local Home = WindowFunction:MakeTab({Name = "Home"})
-    for c=1,5 do Home:AddBlank(theme) end
-    for theme,_ in pairs(AkrionLib.Themes) do
-        Home:AddThemeButton(theme)
-    end
+    WindowFunction:MakeTab({Name = "Home", SortOrder = Enum.SortOrder.LayoutOrder})
     Connect(UIS.InputBegan, function(Input)
 		if Input.KeyCode == Enum.KeyCode.RightShift then
 			Menu.Visible = AkrionLib.Hidden
 			AkrionLib.Hidden = not AkrionLib.Hidden
+			SaveSettings()
 		end
-	end)
+    end)
+    function WindowFunction:Init(Configs)
+        Init = true
+        local Settings = WindowFunction:MakeTab({Name = "Settings", SortOrder = Enum.SortOrder.LayoutOrder})
+        Settings:AddParagraph({Title = "Themes", Text = "Multiple themes that lets you decide what colours you want the menu to consist of!"})
+        Settings:AddBlank()
+        for theme,_ in pairs(AkrionLib.Themes) do
+            Settings:AddThemeButton(theme)
+        end
+    end
     return WindowFunction
 end
 return AkrionLib
