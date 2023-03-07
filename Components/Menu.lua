@@ -22,7 +22,7 @@ return {
 	};
 	Intruders = {
 		Name = "Anime Dimensions Intruders";
-		Description = "Menu that was specialized for Anime Dimensions Simulator and released by ''The Intruders''";
+		Description = "Menu that was specialized for Anime Dimensions Simulator and released by 'The Intruders'";
 		GameDetect = 2655311011;
 		Search = "Anime Dimensions Simulator";
 		Url = "https://raw.githubusercontent.com/lifaiossama/errors/main/Intruders.html";
