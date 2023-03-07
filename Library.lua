@@ -37,10 +37,10 @@ function SaveSettings()
             if not isfolder("Toga ™") then
                 makefolder("Toga ™")
             end
-            if not isfolder("Akrion") then
-                makefolder("Toga ™".."\\".."Akrion")
+            if not isfolder("Toga ™/Akrion") then
+                makefolder("Toga ™/Akrion")
             end
-            writefile("Toga ™".."\\".."Akrion".."\\".."Settings.lua", a)
+            writefile("Toga ™/Akrion/Settings.lua", a)
         end
     end
 end
