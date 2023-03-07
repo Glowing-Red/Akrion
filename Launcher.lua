@@ -54,3 +54,5 @@ for a,b in pairs({["Hub"] = Hubs, ["Menu"] = Menus, ["Universal"] = Universals})
         end
     end
 end
+
+Window:Init()
