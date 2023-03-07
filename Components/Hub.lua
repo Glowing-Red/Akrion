@@ -13,4 +13,11 @@ return {
 		Search = "MrJack||Mr Jack";
 		Url = "https://thedragonslayer2.github.io/AutoExec.html";
 	};
+	HydroHub = {
+		Name = "Hydro";
+		Description = "Hydro is a newly released hub by a small yet impressive developer";
+		GameDetect = {6839171747, 6516141723};
+		Search = "Hydro Hub";
+		Url = "https://raw.githubusercontent.com/MegamiShin/Exploit-Scripts/main/HydroHub/Loader.lua";
+	};
 }
