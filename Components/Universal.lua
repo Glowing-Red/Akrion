@@ -5,6 +5,12 @@ return {
 		Search = "BetterRoblox|Better Roblox";
 		Url = "https://eternityhub.xyz/BetterRoblox/Loader";
 	};
+	LowGFX = {
+		Name = "Low GFX";
+		Description = "Modifies all the current parts in workspace and changes their material to plastic";
+		Search = "Low GFX";
+		Url = "https://raw.githubusercontent.com/Glowing-Red/Akrion/main/Exclusive/Low%20GFX.lua";
+	};
 	Hydroxide = {
 		Name = "Hydroxide";
 		Description = "Advanced Remote Spy tool that allows you to view remotes called";
