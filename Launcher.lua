@@ -71,3 +71,7 @@ for a,b in pairs({["Hub"] = Hubs, ["Menu"] = Menus, ["Universal"] = Universals})
 end
 
 Window:Init()
+
+game:GetService("Players").LocalPlayer.OnTeleport:Connect(function()
+    syn.queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Glowing-Red/Akrion/main/Launcher.lua"))()]])
+end)
