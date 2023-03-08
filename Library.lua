@@ -883,12 +883,12 @@ function AkrionLib:MakeWindow(Configs)
             Create("UIGradient", {
                 Rotation = 90,
                 Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.20), NumberSequenceKeypoint.new(1.00, 1.00)},
-                Parent = TabContent.User
+                Parent = User
             })
             AddThemeObject("Secondary", Create("ImageLabel", {
                 Name = "Avatar",
                 Image = Players:GetUserThumbnailAsync(Plr.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420),
-                Parent = TabContent.User,
+                Parent = User,
                 AnchorPoint = Vector2.new(0.5, 0),
                 BackgroundTransparency = 0.700,
                 Position = UDim2.new(0.5, 0, 0.0500000007, 0),
@@ -896,11 +896,11 @@ function AkrionLib:MakeWindow(Configs)
             }))
             Create("UICorner", {
                 CornerRadius = UDim.new(1, 0),
-                Parent = TabContent.User.Avatar
+                Parent = User.Avatar
             })
             AddThemeObject("TextDark", Create("TextLabel", {
                 Name = "Username",
-                Parent = TabContent.User,
+                Parent = User,
                 AnchorPoint = Vector2.new(0.5, 0.5),
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1.000,
@@ -914,7 +914,7 @@ function AkrionLib:MakeWindow(Configs)
             }))
             AddThemeObject("Text", Create("TextLabel", {
                 Name = "Detail",
-                Parent = TabContent.User.Username,
+                Parent = User.Username,
                 AnchorPoint = Vector2.new(0, 1),
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1.000,
