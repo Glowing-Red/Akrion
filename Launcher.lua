@@ -1,4 +1,5 @@
 repeat wait() until game:IsLoaded()
+wait(1)
 local Akrion = loadstring(game:HttpGet("https://raw.githubusercontent.com/Glowing-Red/Akrion/main/Library.lua"))()
 local Window = Akrion:MakeWindow({})
 local Hubs = Window:MakeTab({Name = "Hub"})
