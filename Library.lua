@@ -825,7 +825,7 @@ function AkrionLib:MakeWindow(Configs)
         Configs.SortOrder = Configs.SortOrder or Enum.SortOrder.Name
         local TabContentButton = Create("TextButton", {
             Name = Configs.Name,
-            Parent = Tab.Main.List,
+            Parent = Tab:WaitForChild("Main"):WaitForChild("List"),
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundTransparency = 5.000,
             ClipsDescendants = true,
